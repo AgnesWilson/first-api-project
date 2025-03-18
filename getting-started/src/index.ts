@@ -31,3 +31,6 @@ app.get('/posts', (req: Request, res: Response) => {
 
     res.json(filterByAuthor)
 })
+
+//  Syntax för att söka :) 
+//  http://localhost:3000/posts?search=Wilson
