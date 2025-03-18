@@ -1,8 +1,8 @@
 import express, { Request, Response } from 'express';
 const app = express();
 
-import { Todo } from './ToDos';
-import { Post } from './Posts';
+import { Todo } from './modules/ToDos';
+import { Post } from './modules/Posts';
 
 const PORT = 3000
 app.listen(PORT, () => {
