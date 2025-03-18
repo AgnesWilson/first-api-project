@@ -21,5 +21,13 @@ app.get('/todos', (req: Request, res: Response) => {
 
 // -------------------- POSTS ----------------------- //
 app.get('/posts', (req: Request, res: Response) => {
-    res.json(posts)
+    const search = req.query.search
+
+    let filterByAuthor = posts;
+
+    if (search) {
+        filterByAuthor = filterByAuthor.filter((post) => post.author.includes(search.toString()))
+    }
+
+    res.json(filterByAuthor)
 })
