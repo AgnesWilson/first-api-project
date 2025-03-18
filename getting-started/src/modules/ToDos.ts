@@ -1,4 +1,4 @@
-export class Todo {
+class Todo {
     id: number = 0;
     content: string = "";
     done: boolean = false;
@@ -11,3 +11,12 @@ export class Todo {
         this.date = (new Date().toString()); 
     }
 }
+
+export const todos: Todo[] = [
+    new Todo('Gå på promenad'),
+    new Todo('Blötlägg ris'),
+    new Todo('Värm middag'),
+    new Todo('Koka ris'),
+    new Todo('Ladda ner TV spel'),
+    new Todo('Gör klart skolarbete'),
+]
