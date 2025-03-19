@@ -21,16 +21,42 @@ app.get('/todos', (req: Request, res: Response) => {
 
 // -------------------- POSTS ----------------------- //
 app.get('/posts', (req: Request, res: Response) => {
-    const search = req.query.search
+    let filteredPosts = posts;
 
-    let filterByAuthor = posts;
+    // ***** Filterra på författare ***** //
+    const filter = req.query.filter
+    if (filter) {
+        filteredPosts = filteredPosts.filter((post) => post.author.includes(filter.toString()))
+    }
+    res.json(filteredPosts)
 
-    if (search) {
-        filterByAuthor = filterByAuthor.filter((post) => post.author.includes(search.toString()))
+    // *** Sortera på titel i bokstavsordning A-Ö *** //
+    const sortByTitle = req.query.sort
+
+    if (sortByTitle && sortByTitle === "asc") {
+        filteredPosts = filteredPosts.sort((a, b) => {
+            const postOne = a.title.toLowerCase()
+            const postTwo = b.title.toLowerCase()
+
+            if (postOne > postTwo) return 1
+            if (postOne < postTwo) return -1
+            return 0
+        })
     }
 
-    res.json(filterByAuthor)
+    // *** Sortera på titel i bokstavsordning Ö-A *** //
+    if (sortByTitle && sortByTitle === "desc") {
+        filteredPosts = filteredPosts.sort((a, b) => {
+            const postOne = a.title.toLowerCase()
+            const postTwo = b.title.toLowerCase()
+
+            if (postOne < postTwo) return 1
+            if (postOne > postTwo) return -1
+            return 0
+        })
+    }
 })
 
 //  Syntax för att söka :) 
-//  http://localhost:3000/posts?search=Wilson
+//  http://localhost:3000/posts?filter=Wilson
+//  http://localhost:3000/posts?sort=asc
