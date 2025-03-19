@@ -28,7 +28,6 @@ app.get('/posts', (req: Request, res: Response) => {
     if (filter) {
         filteredPosts = filteredPosts.filter((post) => post.author.includes(filter.toString()))
     }
-    res.json(filteredPosts)
 
     // *** Sortera på titel i bokstavsordning A-Ö *** //
     const sortByTitle = req.query.sort
@@ -55,6 +54,7 @@ app.get('/posts', (req: Request, res: Response) => {
             return 0
         })
     }
+    res.json(filteredPosts)
 })
 
 //  Syntax för att söka :) 
