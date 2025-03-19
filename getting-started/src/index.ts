@@ -14,12 +14,12 @@ app.get('/', (_: Request, res: Response) => {
     res.send('Starting Page')
   })
 
-// -------------------- TO DO ----------------------- //
+// --------------------- TO DO ------------------------ //
 app.get('/todos', (req: Request, res: Response) => {
     res.json(todos)
 })
 
-// -------------------- POSTS ----------------------- //
+// --------------- POSTS - SORT/FILTER ----------------- //
 app.get('/posts', (req: Request, res: Response) => {
     let filteredPosts = posts;
 
@@ -56,6 +56,16 @@ app.get('/posts', (req: Request, res: Response) => {
     }
     res.json(filteredPosts)
 })
+
+// ----------------- POSTS - SORT:id -------------------- //
+app.get('/posts/:id', (req: Request, res: Response) => {
+    const id = req.params.id
+    const post = posts.find((posted) => posted.id === parseInt(id))
+
+    res.json({post})
+
+})
+
 
 //  Syntax för att söka :) 
 //  http://localhost:3000/posts?filter=Wilson

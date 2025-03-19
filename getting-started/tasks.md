@@ -17,6 +17,6 @@
 - [x]The “search” and “sort” query params are retrieved from the Request object. Example: /posts?search=John&sort=asc
 
 ### b)
-- Build on the previous code, create a new GET endpoint “/posts/:id” 
-- that returns a specific post depending on the “:id” path param from the URL 
-- The “:id” path param is retrieved from the Request object.
+- [x] Build on the previous code, create a new GET endpoint “/posts/:id” 
+- [x] that returns a specific post depending on the “:id” path param from the URL 
+- [x] The “:id” path param is retrieved from the Request object.
