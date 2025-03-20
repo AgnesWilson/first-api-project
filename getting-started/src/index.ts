@@ -66,10 +66,14 @@ app.get('/posts/:id', (req: Request, res: Response) => {
 
 })
 
+// ------------------------------------------------------------- //
+// -------------------- LEKTION NUMMER TVÅ --------------------- //
+// ------------------------------------------------------------- //
+
 //gäller för alla requests
 app.use(express.json()) // "Middleware" Hanterar omvandling från json till js/ts så att vi kan hantera det
 
-// ----------------- INSOMNIA POSTS -------------------- //
+// --------------- ADD NEW POST EXTERNALLY ------------------ //
 app.post('/posts', (req: Request, res: Response) => {
     const { title, content, author } = req.body;
 
@@ -78,6 +82,30 @@ app.post('/posts', (req: Request, res: Response) => {
         posts.push(newPost);
 
         res.status(201).json({ message: 'Inlägget har lagts till', post: newPost });
+    }
+    else {
+        res.status(400).json({message: 'Du måste ange en titel (title), innehåll (content) och författare (author)'})
+    }
+})
+
+// ------------------ EDIT POST EXTERNALLY ------------------- //
+app.patch('/posts/:id', (req: Request, res: Response) => {
+    const { title, content, author } = req.body
+
+    if ( title && content && author) {
+        const post = posts.find((posted) => posted.id === parseInt(req.params.id))
+
+        if (!post) {
+            res.status(404).json ({error: 'Det finns ingen post med det id:t, försök igen'})
+            return
+        }
+        else {
+            post.title = title;
+            post.content = content;
+            post.author = author;
+
+            res.json({message: 'Posten har uppdaterats', data: post})
+        }
     }
     else {
         res.status(400).json({message: 'Du måste ange en titel (title), innehåll (content) och författare (author)'})
