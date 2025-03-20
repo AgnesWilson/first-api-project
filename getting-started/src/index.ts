@@ -2,7 +2,7 @@ import express, { Request, Response } from 'express';
 const app = express();
 
 import { todos } from './modules/ToDos';
-import { posts } from './modules/Posts';
+import { posts, Post } from './modules/Posts';
 
 const PORT = 3000
 app.listen(PORT, () => {
@@ -65,6 +65,25 @@ app.get('/posts/:id', (req: Request, res: Response) => {
     res.json({post})
 
 })
+
+//gäller för alla requests
+app.use(express.json()) // "Middleware" Hanterar omvandling från json till js/ts så att vi kan hantera det
+
+// ----------------- INSOMNIA POSTS -------------------- //
+app.post('/posts', (req: Request, res: Response) => {
+    const { title, content, author } = req.body;
+
+    if (title && content && author) {
+        const newPost = new Post(title, content, author);
+        posts.push(newPost);
+
+        res.status(201).json({ message: 'Inlägget har lagts till', post: newPost });
+    }
+    else {
+        res.status(400).json({message: 'Du måste ange en titel (title), innehåll (content) och författare (author)'})
+    }
+})
+
 
 
 //  Syntax för att söka :) 
