@@ -112,6 +112,19 @@ app.patch('/posts/:id', (req: Request, res: Response) => {
     }
 })
 
+// ----------------- DELETE POST EXTERNALLY ------------------ //
+app.delete('/posts/:id', (req: Request, res: Response) => {
+    const id = req.params.id
+    const postIndex = posts.findIndex((posted) => posted.id === parseInt(id))
+
+    if (postIndex === -1) {
+        res.status(404).json({error: 'Det finns ingen post med det Id:t'})
+    }
+    else {
+        posts.splice(postIndex, 1)
+        res.json({message: 'Post raderad'})
+    }
+})
 
 
 //  Syntax för att söka :) 
