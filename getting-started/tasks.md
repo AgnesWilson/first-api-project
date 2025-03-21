@@ -20,3 +20,18 @@
 - [x] Build on the previous code, create a new GET endpoint “/posts/:id” 
 - [x] that returns a specific post depending on the “:id” path param from the URL 
 - [x] The “:id” path param is retrieved from the Request object.
+
+## Exercise 04-express-crud
+- [ ] Build on the previous code, create new endpoints for POST/PATCH/DELETE posts 
+- [x] The POST endpoint should create a new post with the following properties: id, title, content, author. Validate required fields title, content, author
+- [x] The PATCH endpoint should update an existing post with the “:id” path param. Should be able to update the title, content and author. Validate required fields title, content, author
+- [ ] The DELETE endpoint should delete an existing post with the “:id” path param
+
+## Exercise 05-express-validation-errorhandling
+- [ ] Build on the previous code, add error handling with try/catch on all your endpoints
+- [ ] Return data with correct HTTP status codes
+    - [ ] 200 - OK
+    - [ ] 201 - Created
+    - [ ] 400 - Bad Request
+    - [ ] 404 - Not Found
+    - [ ] 500 - Internal Sever Error

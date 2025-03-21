@@ -73,7 +73,7 @@ app.get('/posts/:id', (req: Request, res: Response) => {
 //gäller för alla requests
 app.use(express.json()) // "Middleware" Hanterar omvandling från json till js/ts så att vi kan hantera det
 
-// --------------- ADD NEW POST EXTERNALLY ------------------ //
+// ------------- ADD/POST NEW POST EXTERNALLY ---------------- //
 app.post('/posts', (req: Request, res: Response) => {
     const { title, content, author } = req.body;
 
@@ -88,7 +88,7 @@ app.post('/posts', (req: Request, res: Response) => {
     }
 })
 
-// ------------------ EDIT POST EXTERNALLY ------------------- //
+// --------------- EDIT/PATCH POST EXTERNALLY ---------------- //
 app.patch('/posts/:id', (req: Request, res: Response) => {
     const { title, content, author } = req.body
 
