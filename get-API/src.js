@@ -1,8 +1,14 @@
 const postsElement = document.querySelector('#posts');
 
-const fetchPosts = async () => {
+const fetchPosts = async (e) => {
+
+    let queryString = '';
+    if (e !== undefined) {
+        queryString = `/?${e.target.name}=${e.target.value}`;
+    }
+
     try {
-        const response = await fetch('http://localhost:3000/posts')
+        const response = await fetch('http://localhost:3000/posts' + queryString)
         const data = await response.json()
 
         postsElement.innerHTML = data.map((post) => `
@@ -15,7 +21,7 @@ const fetchPosts = async () => {
             </div>`
         ).join('')
     } catch (error) {
-        postsElement.innerHTML = 'Oops, något gick fel i hämtningen av sidans ihhehåll. Försök igen senare!'
+        postsElement.innerHTML = 'Oops, något gick fel i hämtningen av sidans innehåll. Försök igen senare!'
         console.log(error)
     }
 }
