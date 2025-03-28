@@ -5,22 +5,29 @@ body {
     justify-content: center; 
     align-items: center; 
     flex-direction: column;
+}
 
-    .posts {
-        display: flex;
-        flex-direction: column;
-        line-height: 170%;
+.posts {
+    display: flex;
+    flex-direction: column;
+    line-height: 170%;
+    max-width: 50%;
+    margin: 20px auto;
 
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
 
-        .title {
-            font-size: 1.5em;
-        }
+.posts .title {
+    font-size: 1.5em;
+    padding-bottom: 10px;
+}
 
-        .author {
-            font-size: 0.9em;
-            
-        }
-
-    }
-
+.posts .author {
+    font-size: 0.9em;
+    color: grey;
+    padding-top: 10px;
+    text-align: right;
 }
