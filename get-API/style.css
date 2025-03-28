@@ -5,4 +5,22 @@ body {
     justify-content: center; 
     align-items: center; 
     flex-direction: column;
+
+    .posts {
+        display: flex;
+        flex-direction: column;
+        line-height: 170%;
+
+
+        .title {
+            font-size: 1.5em;
+        }
+
+        .author {
+            font-size: 0.9em;
+            
+        }
+
+    }
+
 }
