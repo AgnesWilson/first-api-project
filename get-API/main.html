@@ -11,8 +11,9 @@
     <h1>Posts</h1>
 
     <form id="posts-form" class="form">
-        <input type="text" class="form-control" id="search" placeholder="Sök" name="search">
-        <select id="inputState" class="form-select" id="sort" name="sort" onchange="fetchPosts(event)">
+        <input type="text" class="form-control" id="filter" placeholder="Sök" name="filter" onchange="fetchPosts(event)">
+
+        <select id="inputState" class="form-select" name="sort" onchange="fetchPosts(event)">
             <option>Sortera</option>
             <option value="asc">A-Ö</option>
             <option value="desc">Ö-A</option>
