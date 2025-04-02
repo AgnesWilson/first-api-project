@@ -1,66 +1,69 @@
 import { Request, Response } from "express"
 import { posts, Post } from "../modules/Posts";
 
+import { db } from "../config/db";
+import { ResultSetHeader, RowDataPacket } from "mysql2";
 
-export const fetchAllPosts = (req: Request, res: Response) => {
-    let filteredPosts = posts;
-
-    // ***** Filterra på författare ***** //
-    const filter = req.query.filter
-    if (filter) {
-        filteredPosts = filteredPosts.filter((post) => post.author.includes(filter.toString()))
+// Hämta alla posts
+export const fetchAllPosts = async (req: Request, res: Response) => {
+    try {
+    const [rows] = await db.query<RowDataPacket[]>('SELECT * FROM posts')
+    res.json(rows)
+    } 
+    catch(error: unknown) {
+        const message = error instanceof Error ? error.message : 'Okänt fel'
+        res.status(500).json({error: message}) 
     }
-    
-    // *** Sortera på titel i bokstavsordning A-Ö *** //
-    const sortByTitle = req.query.sort
-    
-    if (sortByTitle && sortByTitle === "asc") {
-        filteredPosts = filteredPosts.sort((a, b) => {
-            const postOne = a.title.toLowerCase()
-            const postTwo = b.title.toLowerCase()
-    
-            if (postOne > postTwo) return 1
-            if (postOne < postTwo) return -1
-            return 0
-        })
-    }
-    
-    // *** Sortera på titel i bokstavsordning Ö-A *** //
-    if (sortByTitle && sortByTitle === "desc") {
-        filteredPosts = filteredPosts.sort((a, b) => {
-            const postOne = a.title.toLowerCase()
-            const postTwo = b.title.toLowerCase()
-    
-            if (postOne < postTwo) return 1
-            if (postOne > postTwo) return -1
-            return 0
-        })
-    }
-    res.json(filteredPosts)
 }
 
-export const searhPostsById = (req: Request, res: Response) => {
+// Sök efter post-ID
+export const searhPostsById = async (req: Request, res: Response) => {
     const id = req.params.id
-    const post = posts.find((posted) => posted.id === parseInt(id))
 
-    res.json({post})
+    try {
+        const sql = `
+        SELECT * FROM posts
+        WHERE id = ?
+        `
+        const [rows] = await db.query<RowDataPacket[]>(sql, [id])
 
+        const post = rows[0];
+        if (!post) {
+            res.status(404).json({message: 'Det fins inte en post med det ID:t, försök igen!'})
+            return;
+        }
+        res.json(post)
+    }
+    catch(error: unknown) {
+        const message = error instanceof Error ? error.message : 'Okänt fel'
+        res.status(500).json({error: message})
+    }
 }
 
-export const createPost = (req: Request, res: Response) => {
+// Skapa ny post
+export const createPost = async (req: Request, res: Response) => {
     const { title, content, author } = req.body;
 
-    if (title && content && author) {
-        const newPost = new Post(title, content, author);
-        posts.push(newPost);
-
-        res.status(201).json({ message: 'Inlägget har lagts till', post: newPost });
+    if (!title || !content || !author) {
+        res.status(400).json({error: 'Du måste ange en titel (title), innehåll (content) och författare (author)'}) 
+        return; 
     }
-    else {
-        res.status(400).json({message: 'Du måste ange en titel (title), innehåll (content) och författare (author)'})
+    
+    try {
+        const sql = `
+            INSERT INTO posts (title, content, author)
+            VALUES (?, ?, ?)
+        `
+        const [result] = await db.query<ResultSetHeader>(sql, [title, content, author])
+        res.status(201).json({message: 'Post tillagd', id: result.insertId})
+    }
+    catch (error: unknown) {
+        const message = error instanceof Error ? error.message : 'Okänt fel'
+        res.status(500).json({error: message})
     }
 }
 
+// UPPDATERA POST -- LÖS SJÄLV --
 export const editPost = (req: Request, res: Response) => {
     const { title, content, author } = req.body
 
@@ -84,15 +87,25 @@ export const editPost = (req: Request, res: Response) => {
     }
 }
 
-export const deletePost = (req: Request, res: Response) => {
+// RADERA POST
+export const deletePost = async (req: Request, res: Response) => {
     const id = req.params.id
-    const postIndex = posts.findIndex((posted) => posted.id === parseInt(id))
 
-    if (postIndex === -1) {
-        res.status(404).json({error: 'Det finns ingen post med det Id:t'})
-    }
-    else {
-        posts.splice(postIndex, 1)
+    try {
+        const sql = `
+        DELETE FROM posts 
+        WHERE id = ?
+        `
+
+        const [result] = await db.query<ResultSetHeader>(sql, [id])
+        if (result.affectedRows === 0) {
+            res.status(404).json({error: 'Det finns ingen post med det Id:t'})
+            return;
+        }
         res.json({message: 'Post raderad'})
+    }
+    catch (error: unknown) {
+        const message = error instanceof Error ? error.message :'Okänt fel'
+        res.status(500).json({error: message})
     }
 }
