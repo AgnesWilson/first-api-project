@@ -64,26 +64,33 @@ export const createPost = async (req: Request, res: Response) => {
 }
 
 // UPPDATERA POST -- LÖS SJÄLV --
-export const editPost = (req: Request, res: Response) => {
-    const { title, content, author } = req.body
+export const editPost = async (req: Request, res: Response) => {
+    const { title, content, author } = req.body;
+    const id = req.params.id;
 
-    if ( title && content && author) {
-        const post = posts.find((posted) => posted.id === parseInt(req.params.id))
-
-        if (!post) {
-            res.status(404).json ({error: 'Det finns ingen post med det id:t, försök igen'})
-            return
-        }
-        else {
-            post.title = title;
-            post.content = content;
-            post.author = author;
-
-            res.json({message: 'Posten har uppdaterats', data: post})
-        }
+    if (!title || !content || !author) {
+        res.status(400).json({error: 'Du måste ange en titel (title), innehåll (content) och författare (author)'}) 
+        return; 
     }
-    else {
-        res.status(400).json({message: 'Du måste ange en titel (title), innehåll (content) och författare (author)'})
+
+    try {
+        const sql = `
+            UPDATE posts
+            SET title = ?, content = ?, author = ?
+            WHERE id = ?
+        `;
+
+        const [result] = await db.query<ResultSetHeader>(sql, [title, content, author, id]);
+
+        if (result.affectedRows === 0) {
+            res.status(404).json({ message: 'Ingen post med det angivna ID:t hittades' });
+            return;
+        }
+
+        res.json({ message: 'Posten har uppdaterats' });
+    } catch (error: unknown) {
+        const message = error instanceof Error ? error.message : 'Okänt fel';
+        res.status(500).json({ error: message });
     }
 }
 

@@ -1,7 +1,7 @@
 ATT GÖRA:
-- [] Gör klart "redigera post" i posts.controller.ts 
-- [] Kolla via imsomnia att ändringarna stämmer
+- [x] Gör klart "redigera post" i posts.controller.ts 
+- [x] Kolla via imsomnia att ändringarna stämmer
 - [] Lägg till Interface? Ipost
-- [] Lägg till posts ptill databasen  
+- [x] Lägg till posts ptill databasen  
 
 - [] Gör så att det funkar med ett "visuellt gränssnitt"
