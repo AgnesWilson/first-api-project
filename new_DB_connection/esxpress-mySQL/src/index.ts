@@ -4,7 +4,8 @@ import cors from 'cors'
 
 import { connectToDatabase } from './config/db';
 
-import routing from './routes/postRouting'
+import postRouting from './routes/postRouting';
+import commentsRouting from './routes/commentsRouting'
 
 const app = express();
 
@@ -13,7 +14,8 @@ app.use(express.json()) // Hanterar omvandling från json till js/ts så att vi 
 app.use(cors());
 
 //Routing 
-app.use('/posts', routing)
+app.use('/posts', postRouting)
+app.use('/comments', commentsRouting)
 
 // Connect To DB
 connectToDatabase();
