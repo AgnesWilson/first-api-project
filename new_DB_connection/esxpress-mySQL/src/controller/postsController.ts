@@ -62,7 +62,7 @@ export const createPost = async (req: Request, res: Response) => {
     }
 }
 
-// UPPDATERA POST -- LÖS SJÄLV --
+// UPPDATERA POST
 export const editPost = async (req: Request, res: Response) => {
     const { title, content, author } = req.body;
     const id = req.params.id;
