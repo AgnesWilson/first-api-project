@@ -7,7 +7,6 @@ router.get
 
 router.get('/', fetchAllPosts)
 router.get('/:id', searhPostsById)
-// ------- LEKTION NUMMER TVÅ ------- //
 router.post('/', createPost)
 router.patch('/:id', editPost)
 router.delete('/:id', deletePost)
