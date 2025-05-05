@@ -17,7 +17,7 @@ app.use('/posts', postRouting)
 app.use('/comments', commentsRouting)
 
 // Connect To DB
-mongoose.connect() // Här ska jag fortsätta 
+mongoose.connect(process.env.MONGODB_URL || "")
 const PORT = 3000
 app.listen(PORT, () => {
     console.log(`server is running at http://localhost:${PORT}`)
