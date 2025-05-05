@@ -1,6 +1,4 @@
 import { Request, Response } from "express"
-
-import { db } from "../config/db";
 import Posts from "../models/Posts";
 
 // Hämta alla posts
